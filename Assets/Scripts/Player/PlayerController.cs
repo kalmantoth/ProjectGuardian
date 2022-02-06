@@ -50,6 +50,15 @@ namespace ProjectGuardian
 		public WeaponType m_ActiveWeaponType;
 		public float m_AttackAnimationModifier = 1f;
 
+		//  basic info management
+		//	input management
+		//	movement logic
+		//	sprite/animation logic
+		//  health management (life/death)  << npc too
+		//  status management				<< npc too
+		//  damagedealing management		<< npc too
+		//  damagetake management			<< npc too
+		//	etc.
 
 		private void Awake()
 		{
@@ -169,7 +178,6 @@ namespace ProjectGuardian
 
 		public void OnEnemyHit(EnemyController enemyController)
 		{
-			Debug.Log(enemyController.name + " enemy hit with " + m_ActiveWeapon.attackDamage);
 			enemyController.TakeDamage(m_ActiveWeapon.attackDamage);
 		}
 
@@ -356,6 +364,6 @@ namespace ProjectGuardian
 
 		}
 
-		
+
 	}
 }

@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 8839380307146903835}
   - component: {fileID: 2549487262467672819}
   m_Layer: 5
-  m_Name: ChestText
+  m_Name: StoredGoldText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -188,7 +188,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8179743676029672857}
-  - component: {fileID: 575592543259586726}
+  - component: {fileID: 2808839876415480575}
+  - component: {fileID: 2572930896564920295}
   - component: {fileID: 8179743676029672852}
   - component: {fileID: 8179743676029672859}
   - component: {fileID: 8179743676029672858}
@@ -214,7 +215,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &575592543259586726
+--- !u!114 &2808839876415480575
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -223,18 +224,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 8179743676029672856}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ee94236dbf676d4b823c6239bc26302, type: 3}
+  m_Script: {fileID: 11500000, guid: 372fa26d97ba1ea40a59b8ea91cc6307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SpriteArray:
+  spriteArray:
   - {fileID: 7440776529911613736, guid: f62342149a0591d469a10bbdd7e94585, type: 3}
   - {fileID: 6409217215734297511, guid: f62342149a0591d469a10bbdd7e94585, type: 3}
   - {fileID: -5828013790707130295, guid: f62342149a0591d469a10bbdd7e94585, type: 3}
   - {fileID: 4446969687103877538, guid: f62342149a0591d469a10bbdd7e94585, type: 3}
   - {fileID: -8328186488863630525, guid: f62342149a0591d469a10bbdd7e94585, type: 3}
-  m_MaxStoredGoldCount: 5
-  m_CurrentStoredGoldCount: 5
-  m_ChestText: {fileID: 2549487262467672819}
+  chestText: {fileID: 2549487262467672819}
+--- !u!114 &2572930896564920295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8179743676029672856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8891316110636544fb4e805075f481a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxStoredGoldCount: 5
+  storedGoldCount: 0
 --- !u!212 &8179743676029672852
 SpriteRenderer:
   m_ObjectHideFlags: 0

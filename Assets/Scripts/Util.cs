@@ -1,49 +1,77 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
-public enum ORIENTATION
-{
-    LEFT,
-    UP,
-    RIGHT,
-    DOWN
-}
 
-public class Util
+namespace ProjectGuardian
 {
-    public static float AnimationLength(string name, Animator animator)
+    public enum ORIENTATION
     {
-        float time = 0;
-        RuntimeAnimatorController ac = animator.runtimeAnimatorController;
-
-        for (int i = 0; i < ac.animationClips.Length; i++)
-            if (ac.animationClips[i].name == name)
-                time = ac.animationClips[i].length;
-
-        return time;
+        LEFT,
+        UP,
+        RIGHT,
+        DOWN
     }
 
-    public static float CalculateDistance(GameObject from, GameObject to)
-    {
-        return Vector3.Distance(from.transform.position, to.transform.position);
-    }
 
-    public static GameObject FindClosestGameobject(GameObject from, List<GameObject> toGameObjects)
+    public static class Util
     {
-        float max = int.MaxValue;
-        GameObject closestGO = null;
-
-        foreach (GameObject GO in toGameObjects)
+        public static float AnimationLength(string name, Animator animator)
         {
-            float calculatedDistance = CalculateDistance(from, GO);
-            if (calculatedDistance < max)
+            float time = 0;
+            RuntimeAnimatorController ac = animator.runtimeAnimatorController;
+
+            for (int i = 0; i < ac.animationClips.Length; i++)
+                if (ac.animationClips[i].name == name)
+                    time = ac.animationClips[i].length;
+
+            return time;
+        }
+
+        public static float CalculateDistance(Transform from, Transform to)
+        {
+            return Vector2.Distance(from.transform.position, to.transform.position);
+        }
+
+        public static Transform FindClosestTransform(Transform from, List<Transform> toTransforms)
+        {
+            float max = int.MaxValue;
+            Transform closestTransform = null;
+
+            foreach (Transform t in toTransforms)
             {
-                max = calculatedDistance;
-                closestGO = GO;
+                float calculatedDistance = CalculateDistance(from, t);
+                if (calculatedDistance < max)
+                {
+                    max = calculatedDistance;
+                    closestTransform = t;
+                }
+
+            }
+            return closestTransform;
+        }
+
+        public static List<Transform> GetObjectsOnSceneByComponentType(System.Type classType)
+        {
+            Transform[] allObjects = UnityEngine.Object.FindObjectsOfType<Transform>();
+            List<Transform> returnList = new List<Transform>();
+            foreach (Transform transform in allObjects)
+            {
+                if (transform.transform.GetComponent(classType) != null)
+                {
+                    returnList.Add(transform);
+                }
             }
 
+            return returnList;
         }
-        return closestGO;
+
+        public static Transform FindClosestTransformByComponentType(Transform from, System.Type classType)
+        {
+            List<Transform> AllTransformWithComponents = GetObjectsOnSceneByComponentType(classType);
+            return FindClosestTransform(from, AllTransformWithComponents);
+
+        }
     }
+
 }

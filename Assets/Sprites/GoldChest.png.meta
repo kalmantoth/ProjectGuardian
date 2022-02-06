@@ -13,10 +13,10 @@ TextureImporter:
     second: GoldChest2
   - first:
       213: 4446969687103877538
-    second: GoldChest3
+    second: GoldChest1
   - first:
       213: -8328186488863630525
-    second: GoldChest4
+    second: GoldChest0
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -94,7 +94,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: GoldChest0
+      name: GoldChest4
       rect:
         serializedVersion: 2
         x: 1
@@ -115,7 +115,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: GoldChest1
+      name: GoldChest3
       rect:
         serializedVersion: 2
         x: 35
@@ -157,7 +157,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: GoldChest3
+      name: GoldChest1
       rect:
         serializedVersion: 2
         x: 1
@@ -178,7 +178,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: GoldChest4
+      name: GoldChest0
       rect:
         serializedVersion: 2
         x: 35

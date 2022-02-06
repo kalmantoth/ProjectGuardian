@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2896136433045931450}
-  - component: {fileID: 2896136433045931449}
+  - component: {fileID: 7326994769567400234}
   - component: {fileID: 2896136433045931448}
   - component: {fileID: 2896136433045931455}
   - component: {fileID: 2896136433045931454}
@@ -35,7 +35,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2896136433045931449
+--- !u!114 &7326994769567400234
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,13 +44,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2896136433045931453}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51a88bb8658c7d240947a1dc7774e1d9, type: 3}
+  m_Script: {fileID: 11500000, guid: 3791dc7429fe46a4999119c569cfd03e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PortalType: 1
-  m_MaxEnemySpawnCount: 0
-  m_CurrentEnemySpawnCount: 0
-  m_EnemySpawnTimer: 0
 --- !u!212 &2896136433045931448
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -137,7 +133,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 0.25, y: 2}
   m_Direction: 0
 --- !u!95 &2896136433045931451
 Animator:

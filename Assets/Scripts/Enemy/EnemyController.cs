@@ -5,10 +5,19 @@ using Pathfinding;
 
 namespace ProjectGuardian
 {
-    public class EnemyController : MonoBehaviour
+
+    public enum EnemyType
+    {
+        SLIME = 0,
+        SKELETON_ARCHER = 1
+    }
+
+    public class EnemyController : MonoBehaviour , IEntity
     {
         [SerializeField] public Animator m_Animator;
         [SerializeField] public Collider2D m_PlayerCheckBox;
+
+        
 
         Rigidbody2D m_Rigidbody2D;
         AIPath m_AIPath;
@@ -35,18 +44,44 @@ namespace ProjectGuardian
 
         public bool m_FacingRight = true;
 
-        GameObject m_DetectedPlayer;
+        public EntityType entityType { get; }
+        public string parentTransform { get; }
 
+
+        //  ai targeting/pathing
+        //  basic info management
+        //  sprite/animation logic
+        //  health management (life/death)  << player too
+        //  status management               << player too
+        //  damagedealing management        << player too
+        //  damagetake management           << player too
+        //  goals handle
+        //  player detection
+        // etc.
         void Awake()
         {
             m_Rigidbody2D = GetComponent<Rigidbody2D>();
             m_AIPath = GetComponent<AIPath>();
             m_AIPath.maxSpeed *= m_MovementSpeed;
-            m_DetectedPlayer = null;
 
             // Ignore collision with another enemy layer GO
             Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Enemy"), true);
 
+
+            // ha az npc akkor ad neki celpontot es igy celt eledesnel
+
+        }
+
+        void Start()
+        {
+            InitEnemy();
+        }
+
+        private void InitEnemy()
+        {
+            SetTarget(GameManager.Instance.GetClosestNonEmptyGoldChest(this.transform));
+            GameManager.Instance.AddNewNpc(this.transform);
+            SetParentTransform();
         }
 
         void Update()
@@ -106,7 +141,9 @@ namespace ProjectGuardian
             if (m_ActualHealthPoint <= 0)
             {
                 // NEED TO IMPLEMENT - play dying animation
-                if(m_RobbedGoldChest != null) m_RobbedGoldChest.GetComponent<GoldChest>().ReturnStolenGold();
+
+                ReturnStolenGold();
+                
 
                 DestroyItself();
             }
@@ -155,35 +192,33 @@ namespace ProjectGuardian
             m_AIPath.destination = movePosition;
         }
 
-        public bool TakeGoldFromGoldChest(GameObject goldChest)
+        public void TakeGoldFromGoldChest(GameObject goldChest)
         {
             if (!m_IsGotCoin)
             {
                 m_RobbedGoldChest = goldChest;
                 m_IsGotCoin = true;
-                SetTarget(GameMaster.Instance.FindClosestEscapePortal(this.gameObject));
-                return true;
+                SetTarget(Util.FindClosestTransformByComponentType(this.transform, typeof(EscapePortal)));
             }
 
-            return false;
         }
 
-        void SetTarget(GameObject targetGO)
+        void SetTarget(Transform targetTrasform)
         {
-            if (targetGO.layer == LayerMask.NameToLayer("Portal") && targetGO.GetComponent<Portal>().m_PortalType == PortalType.ESCAPE_PORTAL)
+            if (targetTrasform.gameObject.layer == LayerMask.NameToLayer("Portal") && targetTrasform.GetComponent<EscapePortal>() != null)
                 m_AIPath.endReachedDistance = 0;
-            m_Target = targetGO.transform;
+            m_Target = targetTrasform;
         }
 
         public void EnemyEscapedWithGold()
         {
-            GameMaster.Instance.GoldStolen();
+            //GameManager.Instance.GoldStolen(); TODOOOODODODODO
             DestroyItself();
         }
 
         public void DestroyItself()
         {
-            GameMaster.Instance.RemoveEnemy(this.gameObject);
+            GameManager.Instance.RemoveNpc(this.transform);
             Destroy(this.gameObject);
         }
 
@@ -201,16 +236,45 @@ namespace ProjectGuardian
 
         public void OnPlayerOutOfDetection()
         {
-            m_DetectedPlayer = null;
 
             if (m_IsGotCoin)
-                m_Target = GameMaster.Instance.FindClosestEscapePortal(this.gameObject).transform;
+                m_Target = Util.FindClosestTransformByComponentType(this.transform, typeof(EscapePortal));
             else
-                m_Target = GameMaster.Instance.FindClosestGoldChest(this.gameObject).transform;
+                m_Target = Util.FindClosestTransformByComponentType(this.transform, typeof(GoldChestManagement));
         }
 
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.gameObject.layer == LayerMask.NameToLayer("GoldChest"))
+            {
+                if (collision.GetComponent<IGoldChestManagement>().TakeGold(1))
+                {
+                    TakeGoldFromGoldChest(collision.gameObject);
+                }
+                else
+                {
+                    Debug.Log("Cant take gold, finding new GC with gold");
+                    SetTarget(GameManager.Instance.GetClosestNonEmptyGoldChest(this.transform));
+                }
+                // it should handle if it can take gold or not
+            }
 
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Portal"))
+            {
+                if (collision.GetComponent<EscapePortal>() && m_IsGotCoin)
+                    EnemyEscapedWithGold();
+            }
+        }
 
+        private void ReturnStolenGold()
+        {
+            if (m_RobbedGoldChest != null) m_RobbedGoldChest.GetComponent<IGoldChestManagement>().PutGold(1);
+        }
+
+        public void SetParentTransform()
+        {
+            this.transform.SetParent(GameObject.Find("Enemies").GetComponent<Transform>());
+        }
 
     }
 }
